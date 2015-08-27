@@ -24,6 +24,7 @@ namespace EBT\ExtensionBuilder\Service;
  ***************************************************************/
 use EBT\ExtensionBuilder\Domain\Model;
 use EBT\ExtensionBuilder\Utility\Inflector;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Builds the required class objects for extbase extensions
@@ -172,6 +173,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * comments needed to create a domain object class file
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject
+	 * @param string
 	 * @param boolean $mergeWithExistingClass
 	 *
 	 * @return \EBT\ExtensionBuilder\Domain\Model\File
@@ -189,7 +191,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			catch (\Exception $e) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Class ' . $fullQualifiedClassName . ' could not be imported: ' . $e->getMessage(), 'extension_builder', 2);
+				GeneralUtility::devLog('Class ' . $fullQualifiedClassName . ' could not be imported: ' . $e->getMessage(), 'extension_builder', 2);
 			}
 		}
 		if ($this->classObject == NULL) {
@@ -384,7 +386,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$setterMethodName = \EBT\ExtensionBuilder\Utility\Tools::getMethodName($domainProperty, 'set');
 		if ($this->classObject->methodExists($setterMethodName)) {
 			$setterMethod = $this->classObject->getMethod($setterMethodName);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Existing setter method imported!', 'extension_builder', 2, $setterMethod->getTags());
+			GeneralUtility::devLog('Existing setter method imported!', 'extension_builder', 2, $setterMethod->getTags());
 		} else {
 			$setterMethod = clone $this->templateClassObject->getMethod('setProperty');
 			$setterMethod->setName('set' . ucfirst($propertyName));
@@ -402,7 +404,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$setterParameters = $setterMethod->getParameterNames();
 		if (!in_array($propertyName, $setterParameters)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Setter for  ' . $propertyName . ' misses parameter!', 'extension_builder', 2, $setterParameters);
+			GeneralUtility::devLog('Setter for  ' . $propertyName . ' misses parameter!', 'extension_builder', 2, $setterParameters);
 			$setterParameter = new Model\ClassObject\MethodParameter($propertyName);
 			$setterParameter->setVarType($domainProperty->getTypeForComment());
 			if (is_subclass_of($domainProperty, 'Model\\DomainObject\\Relation\\AbstractRelation')) {
@@ -577,7 +579,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 			if (in_array($actionName, array('create'))) {
 				$parameterName = 'new' . $domainObject->getName();
 			} else {
-				$parameterName = \TYPO3\CMS\Core\Utility\GeneralUtility::lcfirst($domainObject->getName());
+				$parameterName = GeneralUtility::lcfirst($domainObject->getName());
 			}
 			$actionMethod->getParameterByPosition(0)
 				->setName($parameterName)
@@ -726,6 +728,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * comments that are required to create a controller class file
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject
+	 * @param string
 	 * @param boolean $mergeWithExistingClass
 	 *
 	 * @return \EBT\ExtensionBuilder\Domain\Model\File
@@ -743,7 +746,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			catch (\Exception $e) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Class ' . $className . ' could not be imported: ' . $e->getMessage(), 'extension_builder');
+				GeneralUtility::devLog('Class ' . $className . ' could not be imported: ' . $e->getMessage(), 'extension_builder');
 			}
 		}
 
@@ -761,7 +764,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->classObject->setParentClassName($parentClass);
 		}
 		if ($domainObject->isAggregateRoot()) {
-			$repositoryName = \TYPO3\CMS\Core\Utility\GeneralUtility::lcfirst($domainObject->getName() . 'Repository');
+			$repositoryName = GeneralUtility::lcfirst($domainObject->getName() . 'Repository');
 			// now add the property to class Object (or update an existing class Object property)
 			if (!$this->classObject->propertyExists($repositoryName)) {
 				$classProperty = $this->templateClassObject->getProperty('domainObjectRepository');
@@ -795,6 +798,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * needed to create a repository class file
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject
+	 * @param string
 	 * @param boolean $mergeWithExistingClass
 	 *
 	 * @return \EBT\ExtensionBuilder\Domain\Model\File
@@ -812,7 +816,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			catch (\Exception $e) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Class ' . $className . ' could not be imported: ' . $e->getMessage(), 'extension_builder');
+				GeneralUtility::devLog('Class ' . $className . ' could not be imported: ' . $e->getMessage(), 'extension_builder');
 			}
 		}
 
@@ -865,7 +869,6 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
 		// add the properties that were not in the domainObject
 		$classProperties = $this->classObject->getProperties();
-		$sortedPropertyNames = array_keys($sortedProperties);
 		foreach ($classProperties as $classProperty) {
 			if (!in_array($classProperty->getName(), $sortedProperties)) {
 				$sortedProperties[$classProperty->getName()] = $classProperty;

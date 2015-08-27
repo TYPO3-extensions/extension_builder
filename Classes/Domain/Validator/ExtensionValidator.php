@@ -464,7 +464,6 @@ class ExtensionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 			$propertyNames = array();
 			if (isset($domainObjectConfiguration['value']['propertyGroup']['properties'])) {
 				foreach ($domainObjectConfiguration['value']['propertyGroup']['properties'] as $property) {
-					GeneralUtility::devlog('property', 'extension_builder', 0, $property);
 					if (in_array($property['propertyName'], $propertyNames)) {
 						$this->validationResult['errors'][] = new ExtensionException(
 							'Property "' . $property['propertyName'] . '" of Model "' . $domainObjectConfiguration['value']['name'] . '" exists twice.',
@@ -477,7 +476,6 @@ class ExtensionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 				// check relation names, since these will result in class properties too
 			if (isset($domainObjectConfiguration['value']['relationGroup']['relations'])) {
 				foreach ($domainObjectConfiguration['value']['relationGroup']['relations'] as $property) {
-					GeneralUtility::devlog('relation', 'extension_builder', 0, $property);
 					if (in_array($property['relationName'], $propertyNames)) {
 						$this->validationResult['errors'][] = new ExtensionException(
 							'Property "' . $property['relationName'] . '" of Model "' . $domainObjectConfiguration['value']['name'] . '" exists twice.',

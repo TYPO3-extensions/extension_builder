@@ -28,10 +28,12 @@ use EBT\ExtensionBuilder\Domain\Model\DomainObject;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Creates (or updates) all the required files for an extension
  */
 class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
+
 	/**
 	 * @var \EBT\ExtensionBuilder\Service\ClassBuilder
 	 */
@@ -182,14 +184,14 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 			// Base directory already exists at this point
 		$this->extensionDirectory = $this->extension->getExtensionDir();
 		if (!is_dir($this->extensionDirectory)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($this->extensionDirectory);
+			GeneralUtility::mkdir($this->extensionDirectory);
 		}
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($this->extensionDirectory, 'Configuration');
+		GeneralUtility::mkdir_deep($this->extensionDirectory, 'Configuration');
 
 		$this->configurationDirectory = $this->extensionDirectory . 'Configuration/';
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($this->extensionDirectory, 'Resources/Private');
+		GeneralUtility::mkdir_deep($this->extensionDirectory, 'Resources/Private');
 
 		$this->privateResourcesDirectory = $this->extensionDirectory . 'Resources/Private/';
 
@@ -219,10 +221,10 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function generateYamlSettingsFile() {
 
 		if (!file_exists($this->configurationDirectory . 'ExtensionBuilder/settings.yaml')) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($this->configurationDirectory . 'ExtensionBuilder');
+			GeneralUtility::mkdir($this->configurationDirectory . 'ExtensionBuilder');
 			$fileContents = $this->generateYamlSettings();
 			$targetFile = $this->configurationDirectory . 'ExtensionBuilder/settings.yaml';
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($targetFile, $fileContents);
+			GeneralUtility::writeFile($targetFile, $fileContents);
 		}
 
 	}
@@ -233,13 +235,13 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($extensionFiles as $extensionFile) {
 			try {
 				$fileContents = $this->renderTemplate(
-					\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($extensionFile) . 't',
+					GeneralUtility::underscoredToLowerCamelCase($extensionFile) . 't',
 					array(
 						'extension' => $this->extension
 					)
 				);
 				$this->writeFile($this->extensionDirectory . $extensionFile, $fileContents);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+				GeneralUtility::devlog(
 					'Generated ' . $extensionFile,
 					'extension_builder',
 					0,
@@ -257,11 +259,11 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($this->extension->getPlugins()) {
 			try {
 				$fileContents = $this->renderTemplate(
-					\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase('ext_localconf.phpt'),
+					GeneralUtility::underscoredToLowerCamelCase('ext_localconf.phpt'),
 					array('extension' => $this->extension)
 				);
 				$this->writeFile($this->extensionDirectory . 'ext_localconf.php', $fileContents);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+				GeneralUtility::devlog(
 					'Generated ext_localconf.php',
 					'extension_builder',
 					0,
@@ -290,7 +292,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 							$this->extensionDirectory . 'Configuration/FlexForms/flexform_' . $currentPluginKey . '.xml',
 							$fileContents
 						);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+						GeneralUtility::devlog(
 							'Generated flexform_' . $currentPluginKey . '.xml',
 							'extension_builder',
 							0,
@@ -307,7 +309,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function generateTCAFiles() {
 			// Generate TCA
 		try {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($this->extensionDirectory, 'Configuration/TCA');
+			GeneralUtility::mkdir_deep($this->extensionDirectory, 'Configuration/TCA');
 
 			$domainObjects = $this->extension->getDomainObjects();
 
@@ -350,7 +352,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function generateLocallangFiles() {
 		// Generate locallang*.xlf files
 		try {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($this->privateResourcesDirectory, 'Language');
+			GeneralUtility::mkdir_deep($this->privateResourcesDirectory, 'Language');
 			$this->languageDirectory = $this->privateResourcesDirectory . 'Language/';
 			$fileContents = $this->generateLocallangFileContent();
 			$this->writeFile($this->languageDirectory . 'locallang.xlf', $fileContents);
@@ -524,7 +526,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 					}
 					$fileContents = $this->generateDomainObjectCode($domainObject, $mergeWithExistingClass);
 					$this->writeFile($this->extensionDirectory . $destinationFile, $fileContents);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+					GeneralUtility::devlog(
 						'Generated ' . $domainObject->getName() . '.php',
 						'extension_builder',
 						0
@@ -553,7 +555,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 						}
 						$fileContents = $this->generateDomainRepositoryCode($domainObject, $mergeWithExistingClass);
 						$this->writeFile($this->extensionDirectory . $destinationFile, $fileContents);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+						GeneralUtility::devlog(
 							'Generated ' . $domainObject->getName() . 'Repository.php',
 							'extension_builder',
 							0
@@ -581,7 +583,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 					}
 					$fileContents = $this->generateActionControllerCode($domainObject, $mergeWithExistingClass);
 					$this->writeFile($this->extensionDirectory . $destinationFile, $fileContents);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+					GeneralUtility::devlog(
 						'Generated ' . $domainObject->getName() . 'Controller.php',
 						'extension_builder',
 						0
@@ -623,7 +625,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 
 		}
 		else {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+			GeneralUtility::devlog(
 				'No domainObjects in this extension',
 				'extension_builder',
 				3,
@@ -683,7 +685,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function generateDocumentationFiles() {
 		$this->mkdir_deep($this->extensionDirectory, 'Documentation.tmpl');
 		$docFiles = array();
-		$docFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(
+		$docFiles = GeneralUtility::getAllFilesAndFoldersInPath(
 			$docFiles,
 			ExtensionManagementUtility::extPath('extension_builder') . 'Resources/Private/CodeTemplates/Extbase/Documentation.tmpl/',
 			'',
@@ -960,7 +962,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 
 			if (@file_exists($existingFile)) {
 				$existingLabels = $this->localizationService->getLabelArrayFromFile($existingFile, 'default');
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+				GeneralUtility::devlog(
 					'locallang' . $fileNameSuffix . ' existing labels',
 					'extension_builder',
 					1,
@@ -1088,7 +1090,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if (!empty($classPath)) {
 			if (!is_dir($extensionDirectory . $classPath) && $createDirIfNotExist) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extensionDirectory, $classPath);
+				GeneralUtility::mkdir_deep($extensionDirectory, $classPath);
 			}
 			if (!is_dir($extensionDirectory . $classPath) && $createDirIfNotExist) {
 				throw new \Exception('folder could not be created:' . $extensionDirectory . $classPath);
@@ -1101,7 +1103,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile
+	 * wrapper for GeneralUtility::writeFile
 	 * checks for overwrite settings
 	 *
 	 * path and filename of the targetFile, relative to extension dir:
@@ -1126,7 +1128,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 				$fileExtension = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 				if ($fileExtension == 'html') {
 						//TODO: We need some kind of protocol to be displayed after code generation
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devlog(
+					GeneralUtility::devlog(
 						'File ' . basename($targetFile) . ' was not written. Template files can\'t be merged!',
 						'extension_builder',
 						1
@@ -1142,7 +1144,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		if (empty($fileContents)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(
+			GeneralUtility::devLog(
 				'No file content! File ' . $targetFile . ' had no content',
 				'extension_builder',
 				0,
@@ -1150,7 +1152,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 			);
 			return;
 		}
-		$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($targetFile, $fileContents);
+		$success = GeneralUtility::writeFile($targetFile, $fileContents);
 		if (!$success) {
 			throw new \Exception('File ' . $targetFile . ' could not be created!');
 		}
@@ -1205,7 +1207,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile
+	 * wrapper for GeneralUtility::writeFile
 	 * checks for overwrite settings
 	 *
 	 * @param string $targetFile the path and filename of the targetFile
@@ -1218,12 +1220,12 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 			return;
 		}
 		if (!file_exists($targetFile) || ($this->roundTripEnabled && $overWriteMode < 2)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($sourceFile, $targetFile);
+			GeneralUtility::upload_copy_move($sourceFile, $targetFile);
 		}
 	}
 
 	/**
-	 * wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep
+	 * wrapper for GeneralUtility::mkdir_deep
 	 * checks for overwrite settings
 	 *
 	 * @param string $directory base path
@@ -1243,7 +1245,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 				return;
 			}
 			if (!is_dir($deepDirectory) || ($this->roundTripEnabled && $overWriteMode < 2)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($tmpBasePath, $subDirectory);
+				GeneralUtility::mkdir_deep($tmpBasePath, $subDirectory);
 			}
 			$tmpBasePath .= $subDirectory . '/';
 		}

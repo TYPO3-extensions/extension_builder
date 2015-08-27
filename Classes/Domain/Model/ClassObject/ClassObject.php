@@ -40,13 +40,6 @@ class ClassObject extends AbstractObject {
 	protected $properties = array();
 
 	/**
-	 * @deprecated Use this->getPropertyNames() instead
-	 * @var string[]
-	 */
-	protected $propertyNames = array();
-
-
-	/**
 	 * @var \EBT\ExtensionBuilder\Domain\Model\ClassObject\Method[]
 	 */
 	protected $methods = array();
@@ -416,7 +409,6 @@ class ClassObject extends AbstractObject {
 	 */
 	public function addProperty(Property $classProperty) {
 		if (!$this->propertyExists($classProperty->getName())) {
-			$this->propertyNames[] = $classProperty->getName();
 			$this->properties[$classProperty->getName()] = $classProperty;
 			$result = TRUE;
 		} else {
