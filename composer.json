@@ -1,7 +1,7 @@
 {
 	"name": "ebt/extension_builder",
 	"type": "typo3-cms-extension",
-	"description": "Tool to kickstart and maintain TYPO3 extensions",
+	"description": "Tool to kickstart and maintain TYPO3 CMS extensions",
 	"homepage": "http://typo3.org",
 	"license": ["GPL-2.0+"],
 	"require": {
