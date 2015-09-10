@@ -151,7 +151,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \EBT\ExtensionBuilder\Service\FileGenerator $fileGenerator
 	 * @param \EBT\ExtensionBuilder\Domain\Model\Extension $extension
-	 * @param boolean roundtrip enabled?
+	 * @param bool roundtrip enabled?
 	 *
 	 * @return void
 	 */
@@ -174,7 +174,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject
 	 * @param string
-	 * @param boolean $mergeWithExistingClass
+	 * @param bool $mergeWithExistingClass
 	 *
 	 * @return \EBT\ExtensionBuilder\Domain\Model\File
 	 */
@@ -341,7 +341,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$setMethod = $this->buildSetterMethod($domainProperty);
 		$this->classObject->setMethod($getMethod);
 		$this->classObject->setMethod($setMethod);
-		if ($domainProperty->getTypeForComment() == 'boolean') {
+		if ($domainProperty->getTypeForComment() == 'bool') {
 			$isMethod = $this->buildIsMethod($domainProperty);
 			$this->classObject->setMethod($isMethod);
 		}
@@ -530,7 +530,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Builds a method that checks the current boolean state of a property
+	 * Builds a method that checks the current bool state of a property
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject\AbstractProperty $domainProperty
 	 *
@@ -545,7 +545,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$isMethod = clone($this->templateClassObject->getMethod('isProperty'));
 			$isMethod->setName('is' . ucfirst($domainProperty->getName()));
-			$isMethod->setTag('return', 'boolean');
+			$isMethod->setTag('return', 'bool');
 			$replacements =  array('property' => $domainProperty->getName());
 			$this->updateMethodBody($isMethod, $replacements);
 			$this->updateDocComment($isMethod, $replacements);
@@ -729,7 +729,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject
 	 * @param string
-	 * @param boolean $mergeWithExistingClass
+	 * @param bool $mergeWithExistingClass
 	 *
 	 * @return \EBT\ExtensionBuilder\Domain\Model\File
 	 */
@@ -799,7 +799,7 @@ class ClassBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject
 	 * @param string
-	 * @param boolean $mergeWithExistingClass
+	 * @param bool $mergeWithExistingClass
 	 *
 	 * @return \EBT\ExtensionBuilder\Domain\Model\File
 	 */
