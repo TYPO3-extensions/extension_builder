@@ -4,6 +4,7 @@
 	"description": "Tool to kickstart and maintain TYPO3 CMS extensions",
 	"homepage": "http://typo3.org",
 	"license": ["GPL-2.0+"],
+	"version": "6.2",
 	"require": {
 		"typo3/cms-core": "~6.2"
 	},
