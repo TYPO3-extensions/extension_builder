@@ -34,6 +34,7 @@ if (!class_exists('PhpParser\PrettyPrinter\Standard')) {
  * provides methods to render the sourcecode for statements
  */
 class Printer extends \PhpParser\PrettyPrinter\Standard {
+	
 	/**
 	 * @var \EBT\ExtensionBuilder\Parser\NodeFactory
 	 */

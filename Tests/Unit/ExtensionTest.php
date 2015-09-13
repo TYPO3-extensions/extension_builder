@@ -43,7 +43,7 @@ class  ExtensionTest extends \EBT\ExtensionBuilder\Tests\BaseTest {
 	 */
 	protected $extension = NULL;
 
-	protected function setUp() {
+	public function setUp() {
 		$this->extension = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('EBT\\ExtensionBuilder\\Domain\\Model\\Extension');
 		$this->persons[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('EBT\\ExtensionBuilder\\Domain\\Model\\Person');
 		$this->persons[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('EBT\\ExtensionBuilder\\Domain\\Model\\Person');

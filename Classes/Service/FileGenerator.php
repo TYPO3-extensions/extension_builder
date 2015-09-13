@@ -32,12 +32,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Creates (or updates) all the required files for an extension
  */
-class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
+class FileGenerator {
 
 	/**
 	 * @var \EBT\ExtensionBuilder\Service\ClassBuilder
 	 */
 	protected $classBuilder = NULL;
+
+	/**
+	 * @var \EBT\ExtensionBuilder\Service\RoundTrip
+	 */
+	protected $roundTripService = NULL;
 
 	/**
 	 * @var string
@@ -135,6 +140,15 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->classBuilder = $classBuilder;
 	}
 
+
+	/**
+	 * @param \EBT\ExtensionBuilder\Service\RoundTrip $roundTripService
+	 * @return void
+	 */
+	public function injectRoundtripService(RoundTrip $roundTripService) {
+		$this->roundTripService = $roundTripService;
+	}
+
 	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface  $objectManager
 	 */
@@ -174,6 +188,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->extension = $extension;
 		if ($this->settings['extConf']['enableRoundtrip'] == 1) {
 			$this->roundTripEnabled = TRUE;
+			$this->roundTripService->initialize($extension);
 		}
 		if (isset($this->settings['codeTemplateRootPath'])) {
 			$this->codeTemplateRootPath = $this->settings['codeTemplateRootPath'];
@@ -498,7 +513,7 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function generateDomainObjectRelatedFiles() {
 
 		if (count($this->extension->getDomainObjects()) > 0) {
-			$this->classBuilder->initialize($this, $this->extension, $this->roundTripEnabled);
+			$this->classBuilder->initialize($this->extension);
 				// Generate Domain Model
 			try {
 
@@ -748,12 +763,16 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function generateActionControllerCode(
-		\EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject, $mergeWithExistingClass) {
+		\EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject) {
 		$controllerTemplateFilePath = $this->codeTemplateRootPath . 'Classes/Controller/Controller.phpt';
+		$existingClassFileObject = NULL;
+		if ($this->roundTripEnabled) {
+			$existingClassFileObject = $this->roundTripService->getControllerClassFile($domainObject);
+		}
 		$controllerClassFileObject = $this->classBuilder->generateControllerClassFileObject(
 			$domainObject,
 			$controllerTemplateFilePath,
-			$mergeWithExistingClass
+			$existingClassFileObject
 		);
 			// returns a class object if an existing class was found
 		if ($controllerClassFileObject) {
@@ -772,9 +791,13 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param bool $mergeWithExistingClass
 	 * @return string
 	 */
-	public function generateDomainObjectCode(\EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject, $mergeWithExistingClass) {
+	public function generateDomainObjectCode(\EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject) {
 		$modelTemplateClassPath = $this->codeTemplateRootPath . 'Classes/Domain/Model/Model.phpt';
-		$modelClassFileObject = $this->classBuilder->generateModelClassFileObject($domainObject, $modelTemplateClassPath, $mergeWithExistingClass);
+		$existingClassFileObject = NULL;
+		if ($this->roundTripEnabled) {
+			$existingClassFileObject = $this->roundTripService->getDomainModelClassFile($domainObject);
+		}
+		$modelClassFileObject = $this->classBuilder->generateModelClassFileObject($domainObject, $modelTemplateClassPath, $existingClassFileObject);
 		if ($modelClassFileObject) {
 			$this->addLicenseHeader($modelClassFileObject->getFirstClass());
 			return $this->printerService->renderFileObject($modelClassFileObject, TRUE);
@@ -808,13 +831,16 @@ class FileGenerator implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return string
 	 */
-	public function generateDomainRepositoryCode(
-		\EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject, $mergeWithExistingClass) {
+	public function generateDomainRepositoryCode(\EBT\ExtensionBuilder\Domain\Model\DomainObject $domainObject) {
 		$repositoryTemplateClassPath = $this->codeTemplateRootPath . 'Classes/Domain/Repository/Repository.phpt';
+		$existingClassFileObject = NULL;
+		if ($this->roundTripEnabled) {
+			$existingClassFileObject = $this->roundTripService->getRepositoryClassFile($domainObject);
+		}
 		$repositoryClassFileObject = $this->classBuilder->generateRepositoryClassFileObject(
 			$domainObject,
 			$repositoryTemplateClassPath,
-			$mergeWithExistingClass
+			$existingClassFileObject
 		);
 		if ($repositoryClassFileObject) {
 			$this->addLicenseHeader($repositoryClassFileObject->getFirstClass());
