@@ -12,7 +12,7 @@ class ConfigurationViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
 
 	public function render() {
 
-		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		$this->pageRenderer = GeneralUtility::makeInstance('TYPO3\CMS\Core\Page\PageRenderer');
 
 		$baseUrl = '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('extension_builder');
 		$this->pageRenderer->disableCompressJavascript();
@@ -110,8 +110,7 @@ class ConfigurationViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBa
 	 * @return void
 	 */
 	private function setLocallangSettings() {
-		$languageFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
-		$LL = $languageFactory->getParsedData('EXT:extension_builder/Resources/Private/Language/locallang.xml', 'default');
+		$LL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:extension_builder/Resources/Private/Language/locallang.xml', 'default');
 		if (!empty($LL['default']) && is_array($LL['default'])) {
 			foreach ($LL['default'] as $key => $value) {
 				$this->pageRenderer->addInlineSetting(
