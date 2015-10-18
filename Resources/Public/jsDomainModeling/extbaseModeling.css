@@ -267,6 +267,7 @@ div.relationGroup{
 
 div.relationGroup .textfieldWrapper {
 	margin-left: 10px;
+    margin-right: 45px;
 }
 div.relationGroup div.advancedSettings .textfieldWrapper {
 	margin-left: 0;
@@ -298,6 +299,7 @@ div.inputEx-label label{
 div.relationGroup div.inputEx-label{
 	text-align:right;
 }
+
 
 
 .inputEx-fieldWrapper {
@@ -459,7 +461,7 @@ div.propertyGroup textarea:focus,
 div.propertyGroup .inputEx-Expanded textarea,
 div.propertyGroup input[type=text]:focus,
 div.relationGroup input[type=text]:focus{
-	border: 1px solid #666;
+	border: 1px solid #fff;
 	font-weight: normal;
 }
 
@@ -644,7 +646,7 @@ div#propertiesForm div.mainGroup div.checkBoxFieldWrapper div.inputEx-label {
 .showAdvancedOptions .inputEx-ListField-childContainer > div {
 	padding-top: 5px;
 	margin-top: 5px;
-	border-top: 1px solid #666;
+	border-top: 1px solid #BBB;
 }
 
 div.positionGroup div.inputEx-fieldWrapper {
@@ -673,13 +675,23 @@ div.positionGroup div.inputEx-fieldWrapper {
 .inputEx-ListField-Arrow,
 .WireIt-Container-closebutton.t3-icon-edit-delete,
 .deleteButton {
-	display: none;
+    display: none;
 }
 
 div:hover > .inputEx-ListField-Arrow,
 div:hover > .WireIt-Container-closebutton.t3-icon-edit-delete,
 div:hover > .deleteButton {
 	display: block;
+}
+
+.inputEx-Group .inputEx-ListField-Arrow {
+    float: right;
+    margin-right: 20px;
+    margin-top: -20px;
+}
+
+.inputEx-Group .inputEx-ListField-ArrowUp {
+    margin-right: 32px;
 }
 
 #domainModelEditor .collapse {

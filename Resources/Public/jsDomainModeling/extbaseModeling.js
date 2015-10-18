@@ -7,6 +7,14 @@ var extbaseModeling_wiringEditorLanguage = {
 	modules: []
 };
 
+function extbaseModeling_updateWires() {
+    console.log('extbaseModeling_updateWires');
+    var containers = YAHOO.util.Dom.getElementsByClassName('WireIt-Layer')[0].layer.containers;
+    for (var i = 0; i < containers.length; i++) {
+        containers[i].dd.onDrag();
+    }
+}
+
 (function(){
 	var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang, dom = YAHOO.util.Dom;
 
@@ -33,6 +41,11 @@ var extbaseModeling_wiringEditorLanguage = {
 					addFieldsetClass(dom.get(el));
 				});
 			}
+			$$('.inputEx-ListField-Arrow').each(function (el) {
+				return $(el).observe('click', function() {
+					extbaseModeling_updateWires();
+				});
+			});
 		};
 })();
 
@@ -77,6 +90,7 @@ YAHOO.util.Event.onAvailable('toggleAdvancedOptions', function () {
 			$$('#toggleAdvancedOptions .advancedMode')[0].style.display = 'none';
 			advancedMode = false;
 		}
+		extbaseModeling_updateWires();
 		return false;
 	};
 });

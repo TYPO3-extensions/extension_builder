@@ -128,6 +128,8 @@ WireIt.Layer.prototype = {
 		this.el = WireIt.cn('div', {className: this.options.className});
 
 		this.options.parentEl.appendChild(this.el);
+
+        this.el.layer = this;
 	},
 
 
