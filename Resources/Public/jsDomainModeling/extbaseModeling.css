@@ -684,13 +684,13 @@ div:hover > .deleteButton {
 	display: block;
 }
 
-.inputEx-Group .inputEx-ListField-Arrow {
+div.relations div.inputEx-ListField-Arrow {
     float: right;
     margin-right: 20px;
     margin-top: -20px;
 }
 
-.inputEx-Group .inputEx-ListField-ArrowUp {
+div.relations div.inputEx-ListField-ArrowUp {
     margin-right: 32px;
 }
 
