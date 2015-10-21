@@ -267,7 +267,6 @@ div.relationGroup{
 
 div.relationGroup .textfieldWrapper {
 	margin-left: 10px;
-    margin-right: 45px;
 }
 div.relationGroup div.advancedSettings .textfieldWrapper {
 	margin-left: 0;
@@ -439,6 +438,10 @@ div.relationGroup .inputEx-invalid  input[type=text] {
 	font-weight: normal;
 }
 
+.showAdvancedOptions div.relationGroup .inputEx-invalid  input[name=relationName] {
+    font-weight: bold;
+}
+
 div.relationGroup select,
 div.propertyGroup select{
 	-webkit-appearance: none;
@@ -463,6 +466,10 @@ div.propertyGroup input[type=text]:focus,
 div.relationGroup input[type=text]:focus{
 	border: 1px solid #fff;
 	font-weight: normal;
+}
+
+.showAdvancedOptions div.relationGroup input[type=text][name=relationName] {
+    font-weight: bold;
 }
 
 .showAdvancedOptions div.propertyGroup select,
@@ -644,8 +651,6 @@ div#propertiesForm div.mainGroup div.checkBoxFieldWrapper div.inputEx-label {
 }
 
 .showAdvancedOptions .inputEx-ListField-childContainer > div {
-	padding-top: 5px;
-	margin-top: 5px;
 	border-top: 1px solid #BBB;
 }
 
