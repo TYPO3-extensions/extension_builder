@@ -202,6 +202,23 @@ abstract class AbstractObject {
 		return $this->tags[$tagName];
 	}
 
+	/**
+	 * Returns the value of the specified tag
+	 * @return string Value of the given tag
+	 */
+	public function getTagValue($tagName) {
+		$tagValues = $this->getTagValues($tagName);
+		if (is_array($tagValues) && count($tagValues) > 1) {
+			throw new \InvalidArgumentException('Tag "' . $tagName . '" has multiple values.');
+		}
+		if (is_string($tagValues)) {
+			return $tagValues;
+		}
+		if (is_array($tagValues)) {
+			return $tagValues[0];
+		}
+	}
+
 
 	/**
 	 * is called by fluid

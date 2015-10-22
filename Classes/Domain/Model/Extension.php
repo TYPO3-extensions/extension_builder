@@ -41,6 +41,13 @@ class Extension {
 	protected $vendorName = '';
 
 	/**
+	 * The initial vendorname (if the vendor name was changed)
+	 *
+	 * @var string
+	 */
+	protected $originalVendorName = '';
+
+	/**
 	 * extension's name
 	 *
 	 * @var string
@@ -282,6 +289,34 @@ class Extension {
 	 */
 	public function getVendorName() {
 		return $this->vendorName;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getOriginalVendorName() {
+		return $this->originalVendorName;
+	}
+
+	/**
+	 *
+	 * @param string $vendorName
+	 */
+	public function setOriginalVendorName($vendorName) {
+		$this->originalVendorName = $vendorName;
+	}
+
+	/**
+	 *
+	 * @return bool
+	 */
+	public function vendorNameChanged() {
+		$originalVendorName = $this->getOriginalVendorName();
+		if (!empty($originalVendorName) && $originalVendorName != $this->getVendorName()) {
+			$this->renamed = TRUE;
+		}
+		return $this->renamed;
 	}
 
 	/**

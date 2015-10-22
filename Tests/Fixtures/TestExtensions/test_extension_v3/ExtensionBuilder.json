@@ -294,7 +294,7 @@
 		"state":"alpha",
 		"version":"0.9"
 	},
-	"vendorName":"TYPO3",
+	"vendorName":"FIXTURE",
 	"extensionKey":"test_extension",
 	"name":"Compatibility Test Extension Version 1.0",
 	"originalExtensionKey":"",

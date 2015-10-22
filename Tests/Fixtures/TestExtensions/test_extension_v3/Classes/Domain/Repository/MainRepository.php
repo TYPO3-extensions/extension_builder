@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\TestExtension\Domain\Repository;
+namespace FIXTURE\TestExtension\Domain\Repository;
 
 
 /***************************************************************

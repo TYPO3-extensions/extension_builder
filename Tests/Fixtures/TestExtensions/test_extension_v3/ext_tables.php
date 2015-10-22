@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'TYPO3.' . $_EXTKEY,
+	'FIXTURE.' . $_EXTKEY,
 	'Testplugin',
 	'Test plugin'
 );
@@ -18,7 +18,7 @@ if (TYPO3_MODE === 'BE') {
 	 * Registers a Backend Module
 	 */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.' . $_EXTKEY,
+		'FIXTURE.' . $_EXTKEY,
 		'web',	 // Make module a submodule of 'web'
 		'testmodule',	// Submodule key
 		'',						// Position

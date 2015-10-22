@@ -168,6 +168,8 @@ class ConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Configuratio
 			if (floatval($extensionConfigurationJson['log']['extension_builder_version']) >= 2.5) {
 				$result = $extensionConfigurationJson;
 			}
+			$extensionConfigurationJson['properties']['originalVendorName'] = $extensionConfigurationJson['properties']['vendorName'];
+			$result = $extensionConfigurationJson;
 		}
 
 		return $result;
