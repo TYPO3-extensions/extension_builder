@@ -118,6 +118,7 @@
 				"addDeletedField":true,
 				"addHiddenField":true,
 				"addStarttimeEndtimeFields":true,
+				"sorting": true,
 				"type":"Entity",
 				"uid":"580070446343"
 			},
