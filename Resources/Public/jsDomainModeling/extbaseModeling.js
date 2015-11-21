@@ -50,28 +50,6 @@ function extbaseModeling_updateWires() {
 })();
 
 
-
-YAHOO.util.Event.onAvailable('extensionDependencies-field', function () {
-	/**
-	 * Update dependencies in textarea
-	 */
-	$('targetVersionSelector-field').onchange =
-	function (event) {
-		var updatedDependencies = '';
-		var dependencies = $('extensionDependencies-field').value.split("\n");
-		for (i = 0; i < dependencies.length; i++) {
-			parts = dependencies[i].split('=>');
-			if (parts[0].indexOf('typo3') > -1) {
-				updatedDependencies += 'typo3 => ' + event.target.value + "\n";
-			} else {
-				updatedDependencies += dependencies[i] + "\n";
-			}
-
-		}
-		$('extensionDependencies-field').value = updatedDependencies;
-	};
-});
-
 YAHOO.util.Event.onAvailable('toggleAdvancedOptions', function () {
 
 	$('typo3-mod-php').addClassName('yui-skin-sam');
