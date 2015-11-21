@@ -1,3 +1,45 @@
+[BUGFIX] Repository should default to respect sorting
+If a model has sorting the repository should respect it.
+Set the defaultOrderings-property.
+Resolves: #49579
+[BUGFIX] Add 'foreign_sortby' for relations to records with sorting
+If 'foreign_sortby' is set related records are sorted correctly
+upon fetching.
+Resolves: #68694
+[TASK] Remove target selector in 6.2
+Resolves #60741
+[TASK] Fix small css bugs
+Resolves: #68034
+[TASK] Enable renaming of vendor name
+Resolves: #44624
+[TASK] Add client side validator
+Resolves: #59379
+[FEATURE] Confirm overwrite
+Resolves: #67232
+[BUGFIX] css adaptions for sorting arrows
+Make relations sortable
+Resolves: #68689
+[BUGFIX] Make ConfigurationViewHelper 6.2 compatibel
+Resolves: #70676
+[TASK] Refactoring to reduce dependencies
+[TASK] Rename boolean and integer type hints
+Resolves: #58230
+[TASK] Add a warning if mapping to TYPO3 tables
+Resolves: #69656
+[BUGFIX] Follow up to #69635
+Resolves: #69635
+[TASK] Add version in composer.json
+Some minor code cleanups
+[FEATURE] Enable optional generation of documentation-template
+Resolves: #64502
+[BUGFIX] Wrong class name when renaming extension
+Resolves: #69635
+[TASK] Prepend Vendor name in registerPlugin
+Resolves: #69613
+[TASK] Update documentation template
+[TASK] Restriction to version 6.2.*
+Since we have 2 separate branches now, the 6.2 branch
+is restricted to 6.2
 [TASK] Add composer.json
 [TASK] Remove deprecated methods in BE ConfigurationViewHelper
 [TASK] Typoscript configuration per plugin and per module
@@ -106,5 +148,5 @@ case.
 Resolves: #60476
 [BUGFIX] Wrong condition in getFirstLineOfMethodBody
 The mthod name was misspelled also
-[BUGFIX] Prevent fatal error with PHP 5.3
-Resolves: #59351
+
+git log 2e03533e..HEAD --pretty=format:"%s%n%b%n" | grep -v "^$" | grep -v "Tested-by\|Reviewed-by\|Change-Id\|Reviewed-on\|Release" > ChangeLog
